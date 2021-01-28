@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Basics_Tool.ORM;
 using System.Reflection;
 using Model;
+using Basics_Tool;
 
 namespace Tool
 {
@@ -13,15 +14,12 @@ namespace Tool
     {
         static void Main(string[] args)
         {
-            Student std1 = new Student() { ID = 1, name = "张三", height = 175.4 };
-            Student std2 = new Student() { ID = 2, name = "王五", height = 175.4 };
-            //添加语句
-            string sql = CustomAttributeTool.GetInsertSql2<Student>(std1);
-            List<string> ex = new List<string>() { "3", "1", "2" };
-            //修改语句
-            string sql2 = CustomAttributeTool.GetUpdateSql2<Student>(std1, ex);
+            string As = StringTool.String2Ascii("My Name is Thy");
+
+            Console.WriteLine(As);
+            Console.WriteLine(StringTool.Ascii2String(As));
             Console.ReadLine();
         }
     }
-    
+
 }
