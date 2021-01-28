@@ -7,6 +7,8 @@ using Basics_Tool.ORM;
 using System.Reflection;
 using Model;
 using Basics_Tool;
+using System.Data.OracleClient;
+using System.Data;
 
 namespace Tool
 {
@@ -14,12 +16,15 @@ namespace Tool
     {
         static void Main(string[] args)
         {
-            string As = StringTool.String2Ascii("My Name is Thy");
-
-            Console.WriteLine(As);
-            Console.WriteLine(StringTool.Ascii2String(As));
+            string sql = "select  * from user_tab_comments";
+            DataTable dt = new ConnectOracleDB().GetDataTable(sql);
+            for (int i = 0 ; i < dt.Rows.Count ; i++)
+            {
+                Console.WriteLine(dt.Rows[i]["TABLE_NAME"]);
+            }
             Console.ReadLine();
         }
     }
+    
 
 }
