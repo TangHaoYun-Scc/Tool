@@ -1,7 +1,9 @@
 ﻿
+using Basics_Tool.ORM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.IO;
 namespace Tool
 {
@@ -9,31 +11,14 @@ namespace Tool
     {
         static void Main(string[] args)
         {
-            ExportServer ex = new ExportServer();
-            var reauslt = ex.Export("商品信息表" , GetListStuden());
-
-            MemoryStream ms = new MemoryStream();
-            reauslt.Write(ms);
-            ms.Seek(0 , SeekOrigin.Begin);
-            string filename ="D:\\"+ Convert.ToDateTime(DateTime.Now).ToString("yyyyMMddhhmmss") + ".xls";
-            FileStream file = new FileStream(filename , FileMode.Create);
-            file.Write(ms.GetBuffer() , 0 , ms.GetBuffer().Length);//将文件流写入到新建的EXCEL
-            file.Close();//关闭文件
-            //saveTofle(ms , @"D://demo.xlsx");
-            Console.WriteLine("导出成功");
-        }
-
-        private static void saveTofle(MemoryStream file , string fileName)
-        {
-            using (FileStream fs = new FileStream(fileName , FileMode.OpenOrCreate , FileAccess.Write))
+            using (FileStream file = new FileStream("D:\\demo.xls" , FileMode.Open , FileAccess.Read))
             {
-                byte[] buffer = file.ToArray();//转化为byte格式存储
-                fs.Write(buffer , 0 , buffer.Length);
-                fs.Flush();
-                buffer = null;
-            }//使用using可以最后不用关闭fs 比较方便
+                DataTable dt = ExportServer.ExcelImportToDataTable(file);
+            }
+            //Studen st = new Studen();
+            //ExportServer.ExportToFle<Studen>(st);
+            //ExportServer.SaveTofle("学生表" , GetListStuden() , "D:\\" , "demo");
         }
-
         static List<Studen> GetListStuden()
         {
             //测试数据
@@ -51,9 +36,8 @@ namespace Tool
             return list;
         }
 
-
-
     }
+    [TableName("Studen")]
     class Studen
     {
         [DisplayName("编号")]
@@ -69,5 +53,4 @@ namespace Tool
         [DisplayName("地址")]
         public string Address { get; set; }
     }
-
 }
